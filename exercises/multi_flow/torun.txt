@@ -1,10 +1,15 @@
 simple_switch_CLI
 mirroring_add 11 4
+table_add flow_register registerFlowAction 10.0.3.3&&&255.255.255.255 10.0.1.1&&&255.255.255.255 3333&&&65535 0&&&0 => 1 0
+table_add flow_register registerFlowAction 10.0.3.3&&&255.255.255.255 10.0.2.2&&&255.255.255.255 3333&&&65535 0&&&0 => 2 0
+table_add flow_register registerFlowAction 10.0.3.3&&&255.255.255.255 10.0.5.5&&&255.255.255.255 3333&&&65535 0&&&0 => 1 0
 
+table_delete flow_register 0
+table_dump flow_register
 // increase the window size
 xterm -fa 'Monospace' -fs 20
 
-// h1 client1
+// h1 h2 h5 client1
 time ./client.sh
 
 // h3

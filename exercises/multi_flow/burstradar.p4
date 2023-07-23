@@ -191,235 +191,119 @@ control MyIngress(inout headers hdr,
 control MyEgress(inout headers hdr,
                  inout metadata meta,
                  inout standard_metadata_t standard_metadata) {
- 
- 
- bit<SIZE_OF_ENTRY> data; // to move data to register 
- register<bit<1>>(1) isInitialized; // indicate if nessary registers are set
- register<bit<32>>(1) index_flow1; // index of the register array
- register<bit<(SIZE_OF_ENTRY)>>(11) registerFlow1;
- register<bit<16>>(1) currentSize; // total tcp payload saved for a flow, 0 <= currentSize <= maxSizeForTcpPayload
- #define MAX_SIZE_TCP_PAYLOAD 3616 //320*11+96
- register<bit<96>>(1) sdportIP; 
 
- 
+
+////////////////////////////////start////////////////////////////////////////
+ #define MAX_SIZE_TCP_PAYLOAD 3616 //320*11+96
+ bit<32> curFlowID = 0; 
+ bit<32> dataFlowIndex = 0;
+ bit<1> ifValid;
+ bit<SIZE_OF_ENTRY> data; // to move data to register 
+ register<bit<1>>(200) isInitialized; // indicate if nessary registers are set
+ register<bit<32>>(200) entryIndex; // index of the register array
+ register<bit<(SIZE_OF_ENTRY)>>(2200) registerFlow;
+ register<bit<16>>(200) currentSize; // total tcp payload saved for a flow, 0 <= currentSize <= maxSizeForTcpPayload
+ register<bit<96>>(200) sdportIP; 
+
+
  action initialize(){
-    isInitialized.write(0,1);
-    index_flow1.write(0,0);
-    currentSize.write(0,0);
-    // bit<16> tmp = 320*11+96;
-    // maxSizeForTcpPayload.write(0,tmp);
+    isInitialized.write(curFlowID,1);
+    entryIndex.write(curFlowID,0);
+    currentSize.write(curFlowID,0); 
+    log_msg("finish initialzie----");
+ }
+
+ action assemble_port_ip(){
+        bit<96> portIP;
+        portIP = hdr.ipv4.srcAddr ++ hdr.ipv4.dstAddr ++ hdr.tcp.srcPort ++ hdr.tcp.dstPort;
+        sdportIP.write(curFlowID,portIP);
+
+        // update currentSize
+        bit<16> size;
+        currentSize.read(size,curFlowID);
+        size = size + 96;
+        currentSize.write(curFlowID,size);
  }
 
  action do_clone_e2e(){
   clone_preserving_field_list(CloneType.E2E,E2E_CLONE_SESSION_ID,1);
  } 
 
- action assemble_packet() {
-    hdr.tm20.setValid();
-    bit<96> tmp;
-    sdportIP.read(tmp,0);
-    hdr.tm20.ipport=tmp;
-    bit<SIZE_OF_ENTRY> mirror_data;
-    registerFlow1.read(mirror_data, 0);
-    hdr.tm20.msg1=mirror_data;
-    registerFlow1.read(mirror_data, 1);
-    hdr.tm20.msg2=mirror_data;
-    registerFlow1.read(mirror_data, 2);
-    hdr.tm20.msg3=mirror_data;
-    registerFlow1.read(mirror_data, 3);
-    hdr.tm20.msg4=mirror_data;
-    registerFlow1.read(mirror_data, 4);
-    hdr.tm20.msg5=mirror_data;
-    registerFlow1.read(mirror_data, 5);
-    hdr.tm20.msg6=mirror_data;
-    registerFlow1.read(mirror_data, 6);
-    hdr.tm20.msg7=mirror_data;
-    registerFlow1.read(mirror_data, 7);
-    hdr.tm20.msg8=mirror_data;
-    registerFlow1.read(mirror_data, 8);
-    hdr.tm20.msg9=mirror_data;
-    registerFlow1.read(mirror_data, 9);
-    hdr.tm20.msg10=mirror_data;
-    registerFlow1.read(mirror_data, 10);
-    hdr.tm20.msg11=mirror_data;
-    truncate(1000);
- }
+
+action registerFlowAction(bit<32> flowID) {
+    if(flowID <= 0 || flowID > 200) {
+        ifValid = 0;
+    } else {
+        ifValid = 1;
+        curFlowID = flowID;
+        dataFlowIndex = curFlowID*11;
+    }
+    log_msg("flowID------,curFlowID:{}",{curFlowID});
+    // log_msg("",flowID);
+    // log_msg("ifValid------");
+    // log_msg(""+ifValid);
+}
+
  action mark_packet(){
        data = hdr.http.httpData ++ standard_metadata.egress_global_timestamp; // concatenate all required fields into one bitstring 
     
         // add data to regiter array
         bit<32> index;
-        index_flow1.read(index,0);
-        registerFlow1.write(index, data);
-        index_flow1.write(0,index+1);
+        entryIndex.read(index,curFlowID);
+        registerFlow.write(index, data);
+        entryIndex.write(curFlowID,index+1);
 
         // update currentSize
         bit<16> tmp3;
-        currentSize.read(tmp3,0);
+        currentSize.read(tmp3,curFlowID);
         tmp3 = tmp3 + SIZE_OF_ENTRY;
-        currentSize.write(0,tmp3);
- }
-
- action assemble_port_ip(){
-        bit<96> data0;
-        data0 = hdr.ipv4.srcAddr ++ hdr.ipv4.dstAddr ++ hdr.tcp.srcPort ++ hdr.tcp.dstPort;
-        sdportIP.write(0,data0);
-
-        // update currentSize
-        bit<16> tmp3;
-        currentSize.read(tmp3,0);
-        tmp3 = tmp3 + 96;
-        currentSize.write(0,tmp3);
+        currentSize.write(curFlowID,tmp3);
  }
 
 
- 
-/////////////////////////////////////////////////////////////////////////////
-////////////////////////////////flow2////////////////////////////////////////
-bit<SIZE_OF_ENTRY> data_flow2; // to move data to register 
- register<bit<1>>(1) isInitialized_flow2; // indicate if nessary registers are set
- register<bit<32>>(1) index_flow2; // index of the register array
- register<bit<(SIZE_OF_ENTRY)>>(11) registerFlow2;
- register<bit<16>>(1) currentSize_flow2; // total tcp payload saved for a flow, 0 <= currentSize <= maxSizeForTcpPayload
- #define MAX_SIZE_TCP_PAYLOAD 3616 //320*11+96
- register<bit<96>>(1) sdportIP_flow2; 
+action assemble_packet() {
+    hdr.tm20.setValid();
+    bit<96> tmp;
+    sdportIP.read(tmp,curFlowID);
+    hdr.tm20.ipport=tmp;
 
- 
-//  action initialize_f2(){
-//     isInitialized_flow2.write(0,1);
-//     index_flow2.write(0,0);
-//     currentSize_flow2.write(0,0);
-//     // bit<16> tmp = 320*11+96;
-//     // maxSizeForTcpPayload.write(0,tmp);
-//  }
+    bit<SIZE_OF_ENTRY> mirror_data;
+    registerFlow.read(mirror_data, dataFlowIndex);
+    hdr.tm20.msg1=mirror_data;
+    registerFlow.read(mirror_data, dataFlowIndex+1);
+    hdr.tm20.msg2=mirror_data;
+    registerFlow.read(mirror_data, dataFlowIndex+2);
+    hdr.tm20.msg3=mirror_data;
+    registerFlow.read(mirror_data, dataFlowIndex+3);
+    hdr.tm20.msg4=mirror_data;
+    registerFlow.read(mirror_data, dataFlowIndex+4);
+    hdr.tm20.msg5=mirror_data;
+    registerFlow.read(mirror_data, dataFlowIndex+5);
+    hdr.tm20.msg6=mirror_data;
+    registerFlow.read(mirror_data, dataFlowIndex+6);
+    hdr.tm20.msg7=mirror_data;
+    registerFlow.read(mirror_data, dataFlowIndex+7);
+    hdr.tm20.msg8=mirror_data;
+    registerFlow.read(mirror_data, dataFlowIndex+8);
+    hdr.tm20.msg9=mirror_data;
+    registerFlow.read(mirror_data, dataFlowIndex+9);
+    hdr.tm20.msg10=mirror_data;
+    registerFlow.read(mirror_data, dataFlowIndex+10);
+    hdr.tm20.msg11=mirror_data;
+    truncate(1000);
+ }
 
-
-//  action assemble_packet_f2() {
-//     hdr.tm20.setValid();
-//     bit<96> tmp;
-//     sdportIP_flow2.read(tmp,0);
-//     hdr.tm20.ipport=tmp;
-//     bit<SIZE_OF_ENTRY> mirror_data;
-//     registerFlow2.read(mirror_data, 0);
-//     hdr.tm20.msg1=mirror_data;
-//     registerFlow2.read(mirror_data, 1);
-//     hdr.tm20.msg2=mirror_data;
-//     registerFlow2.read(mirror_data, 2);
-//     hdr.tm20.msg3=mirror_data;
-//     registerFlow2.read(mirror_data, 3);
-//     hdr.tm20.msg4=mirror_data;
-//     registerFlow2.read(mirror_data, 4);
-//     hdr.tm20.msg5=mirror_data;
-//     registerFlow2.read(mirror_data, 5);
-//     hdr.tm20.msg6=mirror_data;
-//     registerFlow2.read(mirror_data, 6);
-//     hdr.tm20.msg7=mirror_data;
-//     registerFlow2.read(mirror_data, 7);
-//     hdr.tm20.msg8=mirror_data;
-//     registerFlow2.read(mirror_data, 8);
-//     hdr.tm20.msg9=mirror_data;
-//     registerFlow2.read(mirror_data, 9);
-//     hdr.tm20.msg10=mirror_data;
-//     registerFlow2.read(mirror_data, 10);
-//     hdr.tm20.msg11=mirror_data;
-//     truncate(1000);
-
-//  }
-//  action mark_packet_f2(){
-//        data_flow2 = hdr.http.httpData ++ standard_metadata.egress_global_timestamp; // concatenate all required fields into one bitstring 
-    
-//         // add data to regiter array
-//         bit<32> index;
-//         index_flow2.read(index,0);
-//         registerFlow2.write(index, data_flow2);
-//         index_flow2.write(0,index+1);
-
-//         // update currentSize
-//         bit<16> tmp3;
-//         currentSize_flow2.read(tmp3,0);
-//         tmp3 = tmp3 + SIZE_OF_ENTRY;
-//         currentSize_flow2.write(0,tmp3);
-//  }
-
-//  action assemble_port_ip_f2(){
-//         bit<96> data0;
-//         data0 = hdr.ipv4.srcAddr ++ hdr.ipv4.dstAddr ++ hdr.tcp.srcPort ++ hdr.tcp.dstPort;
-//         sdportIP_flow2.write(0,data0);
-
-//         // update currentSize
-//         bit<16> tmp3;
-//         currentSize_flow2.read(tmp3,0);
-//         tmp3 = tmp3 + 96;
-//         currentSize_flow2.write(0,tmp3);
-//  }
-
-//  action flow2() {  // index and bytesRemaining register values are initialized to 0 from the control plane (simple_switch_CLI)
-//   if(!IS_E2E_CLONE(standard_metadata)){ 
-//      if(hdr.http.isValid() && hdr.ipv4.totalLen>100 && hdr.tcp.srcPort==3333){
-//         bit<1> tmp0;
-//         isInitialized_flow2.read(tmp0,0);
-//         if(tmp0 == 0){
-//             // if a 100 flow only need n packets, the initialize funciton will only be called n times
-//             initialize_f2();
-//         }
-
-//         bit<16> tmp;
-//         currentSize_flow2.read(tmp,0);
-//         bit<16> tmp2; 
-//      //   maxSizeForTcpPayload.read(tmp2,0);
-//         if(tmp == 0) {
-//             assemble_port_ip_f2();
-//         }else if(tmp + SIZE_OF_ENTRY > MAX_SIZE_TCP_PAYLOAD) {
-//           //  do_clone_e2e();
-//             currentSize_flow2.write(0,0);
-//             isInitialized_flow2.write(0,0);
-//         }else{
-//             mark_packet_f2();
-//         }
-//       }  
-//   }else{
-//         assemble_packet_f2();
-//   }
-//  }
-
-////////////////////////////////start////////////////////////////////////////
-action registerFlowAction(bit<4> flowID) {
-    if(flowID == 1) {
-        if(!IS_E2E_CLONE(standard_metadata)){ 
-    if(hdr.http.isValid() && hdr.ipv4.totalLen>100 && hdr.tcp.srcPort==3333){
-        bit<1> tmp0;
-        isInitialized.read(tmp0,0);
-        if(tmp0 == 0){
-            // if a 100 flow only need n packets, the initialize funciton will only be called n times
-            initialize();
-        }
-
-        bit<16> tmp;
-        currentSize.read(tmp,0);
-        bit<16> tmp2; 
-     //   maxSizeForTcpPayload.read(tmp2,0);
-        if(tmp == 0) {
-            assemble_port_ip();
-        }else if(tmp + SIZE_OF_ENTRY > MAX_SIZE_TCP_PAYLOAD) {
-          //  do_clone_e2e();
-            currentSize.write(0,0);
-            isInitialized.write(0,0);
-        }else{
-            mark_packet();
-        }
-    }
-  }else{
-        assemble_packet();
+ table generate_clone{
+  actions = {
+   do_clone_e2e;
+   NoAction;
   }
-    }
-    // } else if (flowID == 2) {
-    //     flow2();
-    // }
-}
+  default_action = NoAction();
+ }
+
+
 //table_add flow_register registerFlowAction 10.0.1.1&&&255.255.255.255 10.0.3.3&&&255.255.255.255 0&&&0 3333&&&0 => 1
-
-
-//table_add flow_register registerFlowAction 10.0.3.3&&&255.255.255.255 10.0.1.1&&&255.255.255.255 3333&&&0 0&&&0 => 1
+//table_add flow_register MyEgress.registerFlowAction 10.0.3.3&&&255.255.255.255 10.0.1.1&&&255.255.255.255 3333&&&0 0&&&0 => 1
 //table_add flow_register registerFlowAction 10.0.3.3&&&255.255.255.255 10.0.2.2&&&255.255.255.255 3333&&&0 0&&&0 => 2
 
  table flow_register {
@@ -436,6 +320,38 @@ action registerFlowAction(bit<4> flowID) {
 
  apply {
         flow_register.apply();
+        if(ifValid == 1) {
+         if(!IS_E2E_CLONE(standard_metadata)){ 
+            if(hdr.http.isValid() && hdr.ipv4.totalLen>100){
+                log_msg("is large pakect--------------------");
+                bit<1> tmp0;
+                isInitialized.read(tmp0,curFlowID);
+                if(tmp0 == 0){
+                    // if a 100 flow only need n packets, the initialize funciton be called n times
+                    initialize();
+                }
+                bit<16> tmp;
+                currentSize.read(tmp,curFlowID);
+                bit<16> tmp2; 
+                log_msg("tmp------,tmp:{}",{tmp});
+                log_msg("SIZE_OF_ENTRY------,SIZE_OF_ENTRY is 320");
+                log_msg("MAX_SIZE_TCP_PAYLOAD------,MAX_SIZE_TCP_PAYLOAD is 3616");
+                if(tmp == 0) {
+                    log_msg("assemble port ip--------------------");
+                    assemble_port_ip();
+                }else if(tmp + SIZE_OF_ENTRY > MAX_SIZE_TCP_PAYLOAD) {
+                    log_msg("true clone--------------------");
+                    generate_clone.apply();
+                    currentSize.write(curFlowID,0);
+                    isInitialized.write(curFlowID,0);
+                }else{
+                    mark_packet();
+                }
+            }  
+        }else{
+                assemble_packet();
+        }
+        }
  }
 
 }
