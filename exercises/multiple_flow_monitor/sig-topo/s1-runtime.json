@@ -1,7 +1,7 @@
 {
   "target": "bmv2",
-  "p4info": "build/burstradar.p4.p4info.txt",
-  "bmv2_json": "build/burstradar.json",
+  "p4info": "build/multiple_flow_monitor.p4.p4info.txt",
+  "bmv2_json": "build/multiple_flow_monitor.json",
   "table_entries": [
     {
       "table": "MyIngress.ipv4_lpm",
