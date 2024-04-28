@@ -92,6 +92,8 @@ sudo reboot
 ### Option3: Setup in a VM and Put Client, Server, and Monitor in to Dockers
 
 ## Test and Run the Project 
+### For Option1 and Option2
+### For Option3
 
 ## Example Result 
 ![results](https://github.com/harshgondaliya/burstradar/blob/master/results-screenshot.PNG)
