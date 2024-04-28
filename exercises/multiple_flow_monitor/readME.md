@@ -42,7 +42,7 @@ Details are provoded in [p4_tutorial repository](https://github.com/p4lang/tutor
    *Note* : The time for this step depends on your computer and Internet speed. On a 2015 MacBook Pro with a 50 Mbps download speed, it took approximately 20 minutes. Ensure a stable Internet connection throughout the process.
 
 
-### Option2: Setup on local Machine
+### Option2: Setup on Your Local Machine
 If you want to setup the P4 environment on you local machine instead of within a VM, follow the instruction below.
 
 1. Clone the repo to your home directory
