@@ -98,6 +98,10 @@ sudo reboot
 ## Example Result 
 ![results](https://github.com/harshgondaliya/burstradar/blob/master/results-screenshot.PNG)
 
+## Run with YCSB
+To run with YCSB we need to first get all the dockers installed and then used Option3. 
+Dockers are listed in the following, and further details please refer to https://docs.google.com/document/d/187HpxOOeDQnsVq4m6vORfAjuiwciMNLbZ7lzsBjfh5A/edit
+
 ## Contact
 Developer: Jiahui (Kristen) Peng
 
