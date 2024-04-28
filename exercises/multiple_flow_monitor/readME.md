@@ -73,9 +73,8 @@ mkdir /home/vagrant/patches
 cp patches/mininet-patch-for-2023-jun.patch /home/vagrant/patches/mininet-patch-for-2023-jun.patch
 ```
 
-4. If you use Ubuntu 22.04, run the following cmd. If don't need to replace the root-release-bootstrap.sh if you are using Ubuntu20.04. For other version, you can check and change the configuration yourself. 
+4. If you use Ubuntu 22.04, run the following cmd. If don't need to replace the root-release-bootstrap.sh if you are using Ubuntu20.04. For other version, you can check and change the configuration yourself. Replace the root-release-bootstrap.sh with the [root-release-bootstrap.sh](https://drive.google.com/drive/folders/19-deKM2I77z3q52bY6irn13Q1CbACP4s)
 
-replace the root-release-bootstrap.sh with the [root-release-bootstrap.sh](https://drive.google.com/drive/folders/19-deKM2I77z3q52bY6irn13Q1CbACP4s)
 5. Change the user to vagrant and replace user-common-bootstrap.sh with [user-common-bootstrap.sh](https://drive.google.com/drive/folders/19-deKM2I77z3q52bY6irn13Q1CbACP4s)
 ```
 usermod -aG sudo vagrant 
