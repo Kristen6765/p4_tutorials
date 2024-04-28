@@ -2,16 +2,24 @@
 # Monitoring Network Flows using P4
 This repository contains implementation of BurstRadar system using P4 _V1Model Architecture_ on _simple_switch target_. 
 
-This project 
-BurstRadar detects a microburst in the dataplane, captures a snapshot of telemetry information of all the involved packets, and further exports this telemetry information to a monitoring server in an out-of-band manner. A detailed explanation and background of BurstRadar system is provided in the aforementioned paper.
+This project allows users to configure and add flows they want to monitor at runtime using P4Runtime. The P4 program will truncate x bytes of the payload of routed messages in the selected flows and aggregate them with packet metrics and flow metrics (Ethernet Header, IPv4 Header, TCP Header, Source IP, Destination IP, Source Port, Destination Port, Ingress Timestamp, and Egress Timestamp) into the monitoring packets and send them out to the monitoring service.
+
 <p align="center">
-  <img src="https://github.com/harshgondaliya/burstradar/blob/master/burstradar-diagram.PNG">
+  <img src="https://github.com/Kristen6765/p4_tutorials/blob/master/exercises/multiple_flow_monitor/img/P4_Structure_Diagram.png">
+</p>
+
+
+
+<p align="center">
+  <img src="https://github.com/Kristen6765/p4_tutorials/blob/master/exercises/multiple_flow_monitor/img/P4_Structure_Diagram.png">
 </p>
 
 ## Environment Setup
 ### Option1 : Setup in a VM
 ### Option2: Setup on local Machine
 ### Option3: Setup in a VM and Put Client, Server, and Monitor in to Dockers
+
+## Test and Run the Project 
 1. Install [Oracle VirtualBox](https://www.virtualbox.org/).
 2. Download the VM Image [(P4 Tutorial 2019-08-15)](https://drive.google.com/open?id=1mfk-BiLQP3YHcOznaHoeio1fWHSNBnKw).
 3. Import _P4 Tutorial 2019-08-15.ova_ appliance in VirtualBox.
