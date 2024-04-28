@@ -98,4 +98,5 @@ sudo reboot
 
 ## Contact
 Developer: Jiahui (Kristen) Peng
-Email: jiahui.peng@mail.mcgill.ca
+
+Email: jiahui(dot)peng(at)mail(dot)mcgill(dot)ca
