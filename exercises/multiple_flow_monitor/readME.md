@@ -95,3 +95,7 @@ sudo reboot
 
 ## Example Result 
 ![results](https://github.com/harshgondaliya/burstradar/blob/master/results-screenshot.PNG)
+
+## Contact
+Developer: Jiahui (Kristen) Peng
+Email: jiahui.peng@mail.mcgill.ca
