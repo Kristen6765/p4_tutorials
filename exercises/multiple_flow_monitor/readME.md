@@ -89,12 +89,23 @@ sudo reboot
 ```
 
 ### Option3: Setup in a VM and Put Client, Server, and Monitor in to Dockers
+Before processing with Option3, please check if you have already instealled using Option1 or Option2. If the isntallation has been done, then remove the Mininet from the previous installation first to avoid conflicts. Or setup in a different machine. 
+1. Clone the FOP4.
+```
+git clone https://github.com/ANTLab-polimi/FOP4.git
+```
+
+2. Flow the instruction from FOP4 to install and test their program.
+
+3. Place the code to the directory FOP4/tree/master/P4_examples
+
 
 ## Test and Run the Project 
 ### For Option1 and Option2
 ### For Option3
 
 ## Example Result 
+H4 contains the trucnated TCPpayloads from the flow (server -> client1). The current one that is displayed on the screenshot is the 36th one. 
 <p align="center">
   <img src="https://github.com/Kristen6765/p4_tutorials/blob/master/exercises/multiple_flow_monitor/img/result.png">
 </p>
