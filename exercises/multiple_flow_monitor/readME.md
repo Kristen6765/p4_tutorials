@@ -5,7 +5,7 @@ This repository contains implementation of BurstRadar system using P4 _V1Model A
 This project allows users to configure and add flows they want to monitor at runtime using P4Runtime. The P4 program will truncate x bytes of the payload of routed messages in the selected flows and aggregate them with packet metrics and flow metrics (Ethernet Header, IPv4 Header, TCP Header, Source IP, Destination IP, Source Port, Destination Port, Ingress Timestamp, and Egress Timestamp) into the monitoring packets and send them out to the monitoring service.
 
 <p align="center">
-  <img src="https://github.com/Kristen6765/p4_tutorials/blob/master/exercises/multiple_flow_monitor/img/P4_Structure_Diagram.png">
+  <img src="https://github.com/Kristen6765/p4_tutorials/blob/master/exercises/multiple_flow_monitor/img/P4_Structure.png">
 </p>
 
 A monitoring packet is limited by the standard Maximum Transmission Unit (MTU) for Ethernet, which is 1500 bytes. Thus, the number of truncated routed messages is also constrained. For example, if we want to aggregate 36 bytes from the routed messages' payloads into the monitoring packet, then the monitoring packet can contain at most 34 of them. (1500-50-12)/(36+6) = 34.
