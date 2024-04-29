@@ -72,9 +72,9 @@ mkdir /home/vagrant/patches
 cp patches/mininet-patch-for-2023-jun.patch /home/vagrant/patches/mininet-patch-for-2023-jun.patch
 ```
 
-4. If you use Ubuntu 22.04, run the following cmd. You don't need to replace the root-release-bootstrap.sh if you are using Ubuntu20.04. For other versions, you can check and change the configuration in this file first. Replace the root-release-bootstrap.sh with the [root-release-bootstrap.sh](https://drive.google.com/drive/folders/19-deKM2I77z3q52bY6irn13Q1CbACP4s)
+4. If you use Ubuntu 22.04, run the following cmd. You don't need to replace the root-release-bootstrap.sh if you are using Ubuntu20.04. For other versions, you can check and change the configuration in this file first. Replace the root-release-bootstrap.sh with the [root-release-bootstrap.sh](https://drive.google.com/drive/folders/1rG9Tbu0P64-LJdb2ESjVIWjQmZtJSo11)
 
-5. Change the user to vagrant and replace user-common-bootstrap.sh with [user-common-bootstrap.sh](https://drive.google.com/drive/folders/19-deKM2I77z3q52bY6irn13Q1CbACP4s)
+5. Change the user to vagrant and replace user-common-bootstrap.sh with [user-common-bootstrap.sh](https://drive.google.com/drive/folders/1rG9Tbu0P64-LJdb2ESjVIWjQmZtJSo11)
 ```
 usermod -aG sudo vagrant 
 cp  user-common-bootstrap.sh /home/vagrant/ 
@@ -97,7 +97,7 @@ git clone https://github.com/ANTLab-polimi/FOP4.git
 
 2. Flow the instruction from FOP4 to install and test their program.
 
-3. Place the code to the directory FOP4/tree/master/P4_examples
+3. Place the code in [fop4] (https://drive.google.com/drive/folders/1rG9Tbu0P64-LJdb2ESjVIWjQmZtJSo11)to the directory FOP4/tree/master/P4_examples
 
 
 ## Test and Run the Project 
@@ -112,7 +112,7 @@ H4 contains the trucnated TCPpayloads from the flow (server -> client1). The cur
 
 ## Run with YCSB
 To run with YCSB we need to first get all the dockers installed and then used Option3. 
-Dockers are listed in the following, and further details please refer to https://docs.google.com/document/d/187HpxOOeDQnsVq4m6vORfAjuiwciMNLbZ7lzsBjfh5A/edit
+Dockers are listed in the [google drive] (https://drive.google.com/drive/folders/1rG9Tbu0P64-LJdb2ESjVIWjQmZtJSo11)
 
 ## Contact
 Developer: Jiahui (Kristen) Peng
