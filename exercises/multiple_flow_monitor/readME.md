@@ -50,7 +50,6 @@ If you want to setup the P4 environment on you local machine instead of within a
 sudo su 
 cd 
 git clone https://github.com/p4lang/tutorials.git
-
 ```
 2. Create a new user called, p4
 ```
@@ -96,7 +95,9 @@ sudo reboot
 ### For Option3
 
 ## Example Result 
-![results](https://github.com/harshgondaliya/burstradar/blob/master/results-screenshot.PNG)
+<p align="center">
+  <img src="https://github.com/Kristen6765/p4_tutorials/blob/master/exercises/multiple_flow_monitor/img/result.png">
+</p>
 
 ## Run with YCSB
 To run with YCSB we need to first get all the dockers installed and then used Option3. 
