@@ -148,12 +148,12 @@ For SQL docker, run to start the service
 su mysql 
 /usr/sbin/mysqld --skip-grant-tables --general-log &
 ```
-For Memcache Docker, runt o start the service
+For Memcache Docker, run to start the service
 ```
 su memcache 
 $ memcached &
 ```
-For Server Docker, runt o start the service
+For Server Docker, run to start the service
 ```
 bash ./bin/catalina.sh run &
 bash ./bin/catalina.sh stop 
