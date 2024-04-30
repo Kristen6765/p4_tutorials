@@ -72,9 +72,13 @@ mkdir /home/vagrant/patches
 cp patches/mininet-patch-for-2023-jun.patch /home/vagrant/patches/mininet-patch-for-2023-jun.patch
 ```
 
-4. If you use Ubuntu 22.04, run the following cmd. You don't need to replace the root-release-bootstrap.sh if you are using Ubuntu20.04. For other versions, you can check and change the configuration in this file first. Replace the root-release-bootstrap.sh with the [root-release-bootstrap.sh](https://drive.google.com/drive/folders/1rG9Tbu0P64-LJdb2ESjVIWjQmZtJSo11)
+4. If you use Ubuntu 22.04, replace the root-release-bootstrap.sh with the [root-release-bootstrap.sh](https://drive.google.com/drive/folders/1rG9Tbu0P64-LJdb2ESjVIWjQmZtJSo11), then run the following cmd.
+```
+bash root-release-bootstrap.sh 
+```
+You don't need to replace the root-release-bootstrap.sh if you are using Ubuntu20.04. For other versions, you can check and change the configuration in this file first.
 
-5. Change the user to vagrant and replace user-common-bootstrap.sh with [user-common-bootstrap.sh](https://drive.google.com/drive/folders/1rG9Tbu0P64-LJdb2ESjVIWjQmZtJSo11)
+6. Change the user to vagrant and replace user-common-bootstrap.sh with [user-common-bootstrap.sh](https://drive.google.com/drive/folders/1rG9Tbu0P64-LJdb2ESjVIWjQmZtJSo11)
 ```
 usermod -aG sudo vagrant 
 cp  user-common-bootstrap.sh /home/vagrant/ 
@@ -89,25 +93,25 @@ sudo reboot
 ```
 
 ### Option3: Setup in a VM and Put Client, Server, and Monitor in to Dockers
-Before processing with Option3, please check if you have already instealled using Option1 or Option2. If the isntallation has been done, then remove the Mininet from the previous installation first to avoid conflicts. Or setup in a different machine. 
+Before proceeding with Option 3, please check if you have already installed Mininet using Option 1 or Option 2. If the installation has been completed, remove Mininet from the previous installation first to avoid conflicts. Alternatively, you can set up Mininet on a different machine.
 1. Clone the FOP4.
 ```
 git clone https://github.com/ANTLab-polimi/FOP4.git
 ```
 
-2. Flow the instruction from FOP4 to install and test their program.
+2. Flow the instructions from [FOP4](https://github.com/ANTLab-polimi/FOP4/tree/master/P4_examples) to install and test their program.
 
-3. Download the [fop4.zip](https://drive.google.com/drive/folders/1rG9Tbu0P64-LJdb2ESjVIWjQmZtJSo11), unzip it and placce it in the directory FOP4/tree/master/P4_examples
+3. Download the [fop4.zip](https://drive.google.com/drive/folders/1rG9Tbu0P64-LJdb2ESjVIWjQmZtJSo11), unzip it and placce it in the directory FOP4/tree/master/P4_examples.
 
 
 ## Test and Run the Project 
 ### For Option1 and Option2
-1. In the project directory, for example the current directory,
+1. In the project directory, for example the current directory, then run
 ```
 sudo make run
 ```
 
-2. Specify the flow that you want to monitor by adding the entries to the table, flow_register, in p4. The examples below will monitor 2 flows.
+2. Specify the flow that you want to monitor by adding the entries to the table, flow_register, in the P4 program. The examples below will monitor 2 flows.
 
 10.0.3.3 (h3, server) -> 10.0.1.1 (h1, client1)
     
@@ -123,16 +127,16 @@ table_add flow_register registerFlowAction 10.0.3.3&&&255.255.255.255 10.0.2.2&&
 ```
 table_dump flow_register
 ```
-4. You can remove an entry from the table by running
+4. You can remove an entry from the table, for example remove the first entry, by running
 ```
 table_delete flow_register 0
 ```
 
 ### For Option3 with YCSB
-1. To run with YCSB we need to first get all the dockers installed and then used Option3. 
+1. To run with YCSB we need to first get all the dockers setup and then used Option3. 
 Dockers are listed in the [google drive](https://drive.google.com/drive/folders/1rG9Tbu0P64-LJdb2ESjVIWjQmZtJSo11)
 
-2. Re-config the docker images in the start.py. For example, replace the current dimage to the image you want to use for your docker.
+2. Re-config the docker images in the start.py. For example, replace the current dimage to the image you want to use a different docker.
 ```
 dsql = net.addDocker('dsql', cls=P4DockerHost, ip='172.17.0.2/24',
                    dimage="sqln", mac="00:00:00:00:00:02")
@@ -141,24 +145,24 @@ dsql = net.addDocker('dsql', cls=P4DockerHost, ip='172.17.0.2/24',
 ```
 python3 start.py
 ```
-4. Follow the instructions printed out in the terminal
+4. Follow the instructions printed out in the terminal.
 5. If you have trouble starting the services in the dockers.
-For SQL docker, run to start the service
+For SQL docker, to start the service by running
 ```
 su mysql 
 /usr/sbin/mysqld --skip-grant-tables --general-log &
 ```
-For Memcache Docker, run to start the service
+For Memcache Docker, to start the service by running
 ```
 su memcache 
 $ memcached &
 ```
-For Server Docker, run to start the service
+For Server Docker, to start the service by running
 ```
 bash ./bin/catalina.sh run &
 bash ./bin/catalina.sh stop 
 ```
-For other reference of how to run the YCSB docker, check this [documentation](https://docs.google.com/document/d/187HpxOOeDQnsVq4m6vORfAjuiwciMNLbZ7lzsBjfh5A/edit#heading=h.nuqhosrglcir)
+For other references of how to run the YCSB docker, check this [documentation](https://docs.google.com/document/d/187HpxOOeDQnsVq4m6vORfAjuiwciMNLbZ7lzsBjfh5A/edit#heading=h.nuqhosrglcir)
 
 ## Example Result 
 H4 contains the trucnated TCPpayloads from the flow (server -> client1). The current one that is displayed on the screenshot is the 36th one. 
@@ -171,3 +175,7 @@ H4 contains the trucnated TCPpayloads from the flow (server -> client1). The cur
 Developer: Jiahui (Kristen) Peng
 
 Email: jiahui(dot)peng(at)mail(dot)mcgill(dot)ca
+
+Developer: Mona Elsaadawy 
+
+Email: mona(dot)elsaadawy(at)mcgill(dot)ca
