@@ -97,7 +97,7 @@ git clone https://github.com/ANTLab-polimi/FOP4.git
 
 2. Flow the instruction from FOP4 to install and test their program.
 
-3. Place the code [/fop4] (https://drive.google.com/drive/folders/1rG9Tbu0P64-LJdb2ESjVIWjQmZtJSo11)in the directory FOP4/tree/master/P4_examples
+3. Download the [/fop4.zip] (https://drive.google.com/drive/folders/1rG9Tbu0P64-LJdb2ESjVIWjQmZtJSo11), unzip it and placce it in the directory FOP4/tree/master/P4_examples
 
 
 ## Test and Run the Project 
