@@ -27,18 +27,18 @@ Details are provoded in [p4_tutorial repository](https://github.com/p4lang/tutor
 1. Install Vagrant and VirtualBox on your system.
 2. Clone the repository
    
-   ```
-   git clone https://github.com/p4lang/tutorials.git
-   ```
+```
+git clone https://github.com/p4lang/tutorials.git
+```
 3. Navigate to the cloned directory :
    
-   ```
-   cd vm-ubuntu-20.04
-   ```
+```
+cd vm-ubuntu-20.04
+```
 4. Start the virtual machine using Vagrant:
-   ```
-   vagrant up
-   ```
+```
+vagrant up
+```
    *Note* : The time for this step depends on your computer and Internet speed. On a 2015 MacBook Pro with a 50 Mbps download speed, it took approximately 20 minutes. Ensure a stable Internet connection throughout the process.
 
 
@@ -103,9 +103,9 @@ git clone https://github.com/ANTLab-polimi/FOP4.git
 ## Test and Run the Project 
 ### For Option1 and Option2
 1. In the project directory, for example the current directory,
-   ```
-   sudo make run
-   ```
+```
+sudo make run
+```
 
 2. Specify the flow that you want to monitor by adding the entries to the table, flow_register, in p4. The examples below will monitor 2 flows.
 
