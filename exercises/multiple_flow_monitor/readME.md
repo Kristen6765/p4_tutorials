@@ -97,7 +97,7 @@ git clone https://github.com/ANTLab-polimi/FOP4.git
 
 2. Flow the instruction from FOP4 to install and test their program.
 
-3. Place the code in [fop4] (https://drive.google.com/drive/folders/1rG9Tbu0P64-LJdb2ESjVIWjQmZtJSo11)to the directory FOP4/tree/master/P4_examples
+3. Place the code [/fop4] (https://drive.google.com/drive/folders/1rG9Tbu0P64-LJdb2ESjVIWjQmZtJSo11)in the directory FOP4/tree/master/P4_examples
 
 
 ## Test and Run the Project 
@@ -128,7 +128,36 @@ table_dump flow_register
 table_delete flow_register 0
 ```
 
-### For Option3
+### For Option3 with YCSB
+1. To run with YCSB we need to first get all the dockers installed and then used Option3. 
+Dockers are listed in the [google drive] (https://drive.google.com/drive/folders/1rG9Tbu0P64-LJdb2ESjVIWjQmZtJSo11)
+
+2. Re-config the docker images in the start.py. For example, replace the current dimage to the image you want to use for your docker.
+```
+dsql = net.addDocker('dsql', cls=P4DockerHost, ip='172.17.0.2/24',
+                   dimage="sqln", mac="00:00:00:00:00:02")
+```
+3. Run start.py
+```
+python3 start.py
+```
+4. Follow the instructions printed out in the terminal
+5. If you have trouble starting the services in the dockers.
+For SQL docker, run to start the service
+```
+su mysql 
+/usr/sbin/mysqld --skip-grant-tables --general-log &
+```
+For Memcache Docker, runt o start the service
+```
+su memcache 
+$ memcached &
+```
+For Server Docker, runt o start the service
+```
+bash ./bin/catalina.sh run &
+bash ./bin/catalina.sh stop 
+```
 
 ## Example Result 
 H4 contains the trucnated TCPpayloads from the flow (server -> client1). The current one that is displayed on the screenshot is the 36th one. 
@@ -136,9 +165,6 @@ H4 contains the trucnated TCPpayloads from the flow (server -> client1). The cur
   <img src="https://github.com/Kristen6765/p4_tutorials/blob/master/exercises/multiple_flow_monitor/img/result.png">
 </p>
 
-## Run with YCSB
-To run with YCSB we need to first get all the dockers installed and then used Option3. 
-Dockers are listed in the [google drive] (https://drive.google.com/drive/folders/1rG9Tbu0P64-LJdb2ESjVIWjQmZtJSo11)
 
 ## Contact
 Developer: Jiahui (Kristen) Peng
