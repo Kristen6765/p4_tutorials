@@ -102,6 +102,32 @@ git clone https://github.com/ANTLab-polimi/FOP4.git
 
 ## Test and Run the Project 
 ### For Option1 and Option2
+1. In the project directory, for example the current directory,
+   ```
+   sudo make run
+   ```
+
+2. Specify the flow that you want to monitor by adding the entries to the table, flow_register, in p4. The examples below will monitor 2 flows.
+
+10.0.3.3 (h3, server) -> 10.0.1.1 (h1, client1)
+    
+10.0.3.3 (h3, server) -> 10.0.1.2 (h1, client2)
+```
+simple_switch_CLI
+mirroring_add 11 4
+table_add flow_register registerFlowAction 10.0.3.3&&&255.255.255.255 10.0.1.1&&&255.255.255.255 3333&&&65535 0&&&0 => 1 0
+table_add flow_register registerFlowAction 10.0.3.3&&&255.255.255.255 10.0.2.2&&&255.255.255.255 3333&&&65535 0&&&0 => 2 0
+
+```
+3. You can check the entries in a table by running
+```
+table_dump flow_register
+```
+4. You can remove an entry from the table by running
+```
+table_delete flow_register 0
+```
+
 ### For Option3
 
 ## Example Result 
