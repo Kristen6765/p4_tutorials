@@ -15,6 +15,10 @@ A monitoring packet is limited by the standard Maximum Transmission Unit (MTU) f
 </p>
 
 ## Environment Setup
+### Pre-Install Environment -- (The easiest way to setup)
+Download the 6 RAR files from this [Google Drive link](https://drive.google.com/drive/folders/1VWmG8r1Q0KXxR13kSr_A_d3YmHHCoSCD). After unzipping them, you will get an OVA file with the P4 environment already set up. You can then import the OVA file using VirtualBox. :)
+You can use the find the p4_tutorials in the home directory, or clone other project to this virtual environment. 
+
 ### Option1 : Setup in a VM
 Details are provoded in [p4_tutorial repository](https://github.com/p4lang/tutorials/edit/master/README.md)
 
